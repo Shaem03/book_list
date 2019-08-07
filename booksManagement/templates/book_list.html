@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load staticfiles %}
+<head>
+  <title>Book List</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+  <link href="{% static 'vendor/mdi-font/css/material-design-iconic-font.min.css'%}" rel="stylesheet" media="all">
+  <link href="{% static 'vendor/font-awesome-4.7/css/font-awesome.min.css'%}" rel="stylesheet" media="all">
+<!-- Font special for pages-->
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i" rel="stylesheet">
+
+<!-- Vendor CSS-->
+  <link href="{% static 'vendor/select2/select2.min.css'%}" rel="stylesheet" media="all">
+  <link href="{% static 'vendor/datepicker/daterangepicker.css'%}" rel="stylesheet" media="all">
+
+<!-- Main CSS-->
+  <link href="{% static 'css/main.css'%}" rel="stylesheet" media="all">
+</head>
+<body>
+
+<div class="container">
+  <h2>List of Books:</h2>
+  <div class="pull-right">
+		<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Add Book</button>
+		<a href="{% url 'logout' %}"><button type="button" class="btn btn-primary btn-lg">Logout</button></a>
+  </div>
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Book Name</th>
+        <th>Author</th>
+        <th>Publication</th>
+        <th>Year of Publication</th>
+        <th>Summary</th>
+        <th>Status</th>
+        <th>Edit</th>
+      </tr>
+    </thead>
+    <tbody>
+	{% for item in res %}
+	    <tr> 
+	        <td>{{ item.book_name }}</td>
+	        <td>{{ item.author }}</td>
+	        <td>{{ item.publication }}</td>
+	        <td>{{ item.year_of_publication }}</td>
+	        <td>{{ item.summary }}</td>
+	        <td>{% if item.status == 1 %}
+	        		Read
+	            {% elif item.status == 2 %}
+	            	Reading
+	            {% elif item.status == 3 %}
+	            	Completed
+            	{%endif%}
+	        </td>
+	        <td>
+	        	<form method="POST" action="{% url 'book_edit' %}">
+		        	{% csrf_token %}
+	        		<input type="hidden" name="book_id" value="{{item.id}}">
+	        		<input type="submit" value="Edit">
+	        	</form>
+	    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Add Book</h4>
+      </div>
+	    <form method="POST" action="{% url 'list' %}">
+        	{% csrf_token %}
+	      <div class="modal-body model-lg">
+		        <div class="wrapper wrapper--w680">
+		            <div class="card card-1">
+		                <div class="card-body">
+		                    <h2 class="title">Add Book</h2>
+		                        <div class="input-group">
+		                            <input class="input--style-1" type="text" placeholder="BOOK NAME" name="book_name">
+		                        </div>
+		                        <div class="input-group">
+		                            <input class="input--style-1" type="text" placeholder="AUTHOR'S NAME" name="author">
+		                        </div>
+		                        <div class="input-group">
+		                            <input class="input--style-1" type="text" placeholder="PUBLICATION" name="publication">
+		                        </div>
+		                        <div class="input-group">
+		                            <input class="input--style-1" type="text" placeholder="YEAR OF PUBLICATION" name="year_of_publication">
+		                        </div>
+		                        <div class="input-group">
+		                            <input class="input--style-1" type="text" placeholder="SUMMARY" name="summary">
+		                        </div>
+		                        <div class="input-group">
+		                        	<select id="status" name="status">
+		                        		<option>STATUS</option>
+		                        		<option value="1">Read</option>
+		                        		<option value="2">Reading</option>
+		                        		<option value="3">Completed</option>
+		                        	</select>
+		                        </div>		                        
+		                </div>
+		            </div>
+			    </div>
+		      </div>
+		      <div class="modal-footer">
+                <button class="btn btn--radius btn--green" type="submit">Add</button>
+                <!-- <input type="submit" value="Login"><a href="{% url 'signup' %}"> -->
+		        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+		      </div>
+	        </form>
+	    </div>
+  </div>
+</div>
+
+</body>
+</html>

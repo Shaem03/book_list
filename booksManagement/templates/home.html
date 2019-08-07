@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Home Page</title>
+</head>
+<body>
+	<p>
+		<h1>Hello</h1>
+		<p>Hello, woadasdasdrld! Hola Mundo!</p>
+		<br>
+		<h3>Todays Date is : {{ data.todays_data }}</h3>
+		<p>{% if data.todays_data.day > 1 %} This is not the first day of the month {%endif%}</p>
+		<br>
+		<h3>My Name is : {{ data.name }}</h3>
+		<p>
+         {% for day in data.daysOfWeek %}
+         {{ day }}
+         {% endfor %}
+	</p>
+</body>
+</html>

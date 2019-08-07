@@ -1,0 +1,9 @@
+{% block content %}
+    <body style="background-color: grey">
+    	<h1>Sign Up</h1>
+        <form class="site-form" action="{% url 'signup' %}" method="POST">
+        	{% csrf_token %}
+		    {{ form }}
+		    <input type="submit" value="Sign Up">
+	  </form>
+{% endblock %}
