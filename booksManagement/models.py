@@ -13,7 +13,6 @@ class BookLists(models.Model):
 	# year_of_publication = models.DateField(_("Date"), default = datetime.date.today)
 	year_of_publication = models.CharField(max_length=250)
 	status = models.IntegerField()
-	user = models.ForeignKey(User, on_delete=models.CASCADE,) 
 
 	class Meta:
 		db_table = "book_list"

@@ -62,6 +62,14 @@
 	        		<input type="hidden" name="book_id" value="{{item.id}}">
 	        		<input type="submit" value="Edit">
 	        	</form>
+	        </td>
+	        <td>
+	        	<form method="POST" action="{% url 'book_delete' %}">
+		        	{% csrf_token %}
+	        		<input type="hidden" name="book_id" value="{{item.id}}">
+	        		<input type="submit" value="Delete">
+	        	</form>
+	        </td>
 	    </tr>
     {% endfor %}
     </tbody>

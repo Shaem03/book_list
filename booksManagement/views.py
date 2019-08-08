@@ -4,6 +4,13 @@ from django import forms
 import datetime
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import authenticate, login, logout
+
+from rest_framework import generics
+
+from .models import BookLists
+from booksManagement.models import BookLists
+from .serializers import PostSerializer
+from . import models
 # from django.template import Template, Context
 # from django.http import HttpResponse, HttpResponseRedirect
 # from django.template import RequestContext
@@ -16,17 +23,6 @@ from django.contrib.auth import authenticate, login, logout
 
 class HomePage(View, forms.Form):
 
-	def home(request):
-		today = datetime.datetime.now().date()
-		name = "muhammed shaheem"
-		daysOfWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-		data = {
-			"todays_data" : today,
-			"name" : name,
-			"daysOfWeek" : daysOfWeek
-		}
-		return render(request, "home.html", {"data" : data})
-
 	def signup(request):
 		if request.method == "POST":
 			
@@ -34,7 +30,8 @@ class HomePage(View, forms.Form):
 
 			if form.is_valid():
 				form.save()
-				return render(request, "index.html")
+				response = redirect('/list/')
+				return response
 		else:
 			form = UserCreationForm()
 
@@ -56,6 +53,22 @@ class HomePage(View, forms.Form):
 
 	def logout(request):
 		logout(request)
-		# return render(request, "login_form.html")
 		response = redirect('/login/')
 		return response
+
+class BooksList(generics.ListAPIView):
+    queryset = BookLists.objects.all()
+    serializer_class = PostSerializer
+
+
+# class BookDetail(generics.RetrieveAPIView):
+#     queryset = BookLists.objects.all()
+#     serializer_class = PostSerializer
+
+class BookDetail(generics.RetrieveUpdateDestroyAPIView):
+    queryset = BookLists.objects.all()
+    serializer_class = PostSerializer
+
+class BooksList(generics.ListCreateAPIView):
+    queryset = BookLists.objects.all()
+    serializer_class = PostSerializer
