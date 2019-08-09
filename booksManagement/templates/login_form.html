@@ -1,6 +1,6 @@
 {% block content %}
     <body style="background-color: grey">
-    	<h1>Sign Up</h1>
+    	<h1>Log in</h1>
         <form class="site-form" action="{% url 'login' %}" method="POST">
         	{% csrf_token %}
 		    {{ form }}
